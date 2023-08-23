@@ -6,19 +6,30 @@ LOWER_BOX_LIMIT = -10
 
 week_high_52 = pd.read_csv("3M_data.csv")
 # number of companies currently is 15
-
+breakout_stocks_list = []
+#stocks broken out of box that are to be brought
 box_check = False
-stock_price = week_high_52.iloc[0]
-# stock_price[0] = stock name
 
-for i in range(1, len(stock_price) - 1):
-    stock_price[i] = float(stock_price[i])
-    stock_price[i + 1] = float(stock_price[i + 1])
-    print(str(stock_price[i]) + "-" + str(stock_price[i + 1]) + " = " + str(stock_price[i] - stock_price[i + 1]))
-    """if stock_price[i] - stock_price[i + 1] > UPPER_BOX_LIMIT:
-        print("Breakout of box, buy it!!!")
-    elif stock_price[i] - stock_price[i + 1] < LOWER_BOX_LIMIT:
-        print("Stop loss omitted, sell it!!!")
-    elif stock_price[i] - stock_price[i + 1] in range(LOWER_BOX_LIMIT, UPPER_BOX_LIMIT):
-        print("Stagnating in the box")
-"""
+def darvas_logic():
+    for i in range(0, len(week_high_52["Company"])):
+        stock_name = week_high_52["Company"][i]
+        stock_price = week_high_52.iloc[i]
+        # stock_price[0] = stock name
+        print(stock_name)
+        for value in range(1, len(stock_price) - 1):
+            stock_price[value] = float(stock_price[value])
+            stock_price[value + 1] = float(stock_price[value + 1])
+            print(str(stock_price[value]) + "-" + str(stock_price[value + 1]) + " = " + str(stock_price[value] - stock_price[value + 1]))
+            if stock_price[value] - stock_price[value + 1] > UPPER_BOX_LIMIT:
+                print("Breakout of box, buy it!!!")
+                breakout_stocks_list.append(stock_name)
+                break
+            elif stock_price[value] - stock_price[value + 1] < LOWER_BOX_LIMIT:
+                print("Stop loss omitted, sell it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                break
+            elif stock_price[value] - stock_price[value + 1] > -10 and stock_price[value] - stock_price[value + 1] < 10:
+                print("Stagnating in the box")
+
+#Cycle 1 check from moneycontrol if there are any stocks that are breaking out of the box
+#Cycle 2 check
+# from the list of stocks that have previously broken out and wether they have broken any stoploss or not
