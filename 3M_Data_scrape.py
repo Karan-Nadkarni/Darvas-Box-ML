@@ -10,6 +10,7 @@ import time
 import os
 import csv
 
+
 # Read the CSV file into a DataFrame
 df = pd.read_csv('52_Week_High.csv')
 
@@ -23,7 +24,7 @@ column_values = df[column_name].tolist()
 company_list = [x for x in column_values if x == x]
 
 # This is the path for folder where you want to save 3M data csv files
-path = r"C:\Users\Dell\Desktop\Research Project\Datasets"
+path = r"C:\Users\Dell\Desktop\My Projects\Sem 3 Project\Datasets"
 
 # Initialize a web driver (make sure you have the appropriate driver installed and configured)
 driver = webdriver.Chrome()
@@ -55,8 +56,9 @@ for company in company_list:
         dropdown_options[0].click()
 
     # Select the 'From' date (3 months ago from current date)
-    three_months_ago = (datetime.datetime.now() - datetime.timedelta(days=90)).strftime("%d/%m/%Y")
-    day, month, year = three_months_ago.split('/')
+    three_months_ago = datetime.datetime(2023,9,8)#(datetime.datetime.now() - datetime.timedelta(days=90)).strftime("%d/%m/%Y")
+    three_months_ago_str = three_months_ago.strftime("%d/%m/%Y")
+    day, month, year = three_months_ago_str.split('/')
     form = driver.find_element_by_xpath("//form[@name='frm_dly']")
     from_date_day = Select(form.find_element_by_name("frm_dy"))
     from_date_day.select_by_value(day)
@@ -72,8 +74,9 @@ for company in company_list:
     from_date_year.send_keys(year)"""
 
     # Select the 'To' date (current date)
-    current_date = time.strftime("%d/%m/%Y")
-    day, month, year = current_date.split('/')
+    current_date = three_months_ago + datetime.timedelta(days=90)#time.strftime("%d/%m/%Y")
+    current_date_str = current_date.strftime("%d/%m/%Y")
+    day, month, year = current_date_str.split('/')
     form = driver.find_element_by_xpath("//form[@name='frm_dly']")
     to_date_day = Select(form.find_element_by_name("to_dy"))
     to_date_day.select_by_value(day)
